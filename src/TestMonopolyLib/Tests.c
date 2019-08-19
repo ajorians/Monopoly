@@ -6,6 +6,8 @@
 #endif
 
 #include <MonopolyGameLib.h>
+#include <MonopolyBoardLib.h>
+#include <MonopolyLocationLib.h>
 
 #ifdef _TINSPIRE
 #define PRINT  nio_printf
@@ -35,12 +37,30 @@ int TestConstruction()
    return TEST_SUCCEEDED;
 }
 
+int TestSomething()
+{
+   MonopolyGameLib api;
+   PRINT_FUNC;
+   if ( RESULT_OK != MonopolyGameLibCreate( &api ) )
+      return TEST_FAILED;
+
+   MonopolyBoardLib board = MonopolyGameGetBoard( api );
+   MonopolyLocationLib spot = MonopolyBoardGetSpot( board, 0 );
+   const char* pstrName = MonopolyLocationGetName( spot );
+
+   if ( RESULT_OK != MonopolyGameLibFree( &api ) )
+      return TEST_FAILED;
+
+   return TEST_SUCCEEDED;
+}
+
 
 //=====================================================================
 typedef int( *testfunc )( );
 testfunc g_Tests[] =
 {
-   TestConstruction
+   TestConstruction,
+   TestSomething
 };
 
 void RunTests()

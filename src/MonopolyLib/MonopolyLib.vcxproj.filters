@@ -18,12 +18,27 @@
     <ClCompile Include="MonopolyGame.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MonopolyBoard.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MonopolyLocation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MonopolyGameLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Result.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonopolyBoardLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonopolyLibTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonopolyLocationLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

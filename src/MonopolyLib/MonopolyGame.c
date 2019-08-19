@@ -1,5 +1,7 @@
 #include "MonopolyGameLib.h"
 
+#include "MonopolyBoardLib.h"
+
 #ifdef _TINSPIRE
 #else
 #include <stdlib.h>
@@ -8,6 +10,8 @@
 struct MonopolyGame
 {
    int m_nTurnNumber;
+
+   MonopolyBoardLib m_Board;
 };
 
 result MonopolyGameLibCreate( MonopolyGameLib* api )
@@ -21,6 +25,7 @@ result MonopolyGameLibCreate( MonopolyGameLib* api )
    }
 
    pM->m_nTurnNumber = 0;
+   MonopolyBoardLibCreate( &pM->m_Board );
 
    *api = pM;
 
@@ -38,8 +43,16 @@ result MonopolyGameLibFree( MonopolyGameLib* api )
    //   free( pS->m_pBoard );
    //   pS->m_pBoard = NULL;
    //}
+   MonopolyBoardLibFree( &pM->m_Board );
 
    free( pM );
    *api = NULL;
    return RESULT_OK;
+}
+
+MonopolyBoardLib MonopolyGameGetBoard( MonopolyGameLib api )
+{
+   struct MonopolyGame* pM = ( struct MonopolyGame* )api;
+
+   return pM->m_Board;
 }

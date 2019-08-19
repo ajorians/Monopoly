@@ -2,10 +2,11 @@
 #define MONOPOLYGAME_H
 
 #include "Result.h"
-
-typedef void* MonopolyGameLib;
+#include "MonopolyLibTypes.h"
 
 result MonopolyGameLibCreate( MonopolyGameLib* api );
 result MonopolyGameLibFree( MonopolyGameLib* api );
+
+MonopolyBoardLib MonopolyGameGetBoard( MonopolyGameLib api );
 
 #endif // MONOPOLYGAME_H
