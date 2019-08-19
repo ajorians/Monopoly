@@ -42,6 +42,7 @@
 *.lastbuildstate
 *.idb
 *.ilk
+*.ipch
 
 
 #Nspire files
