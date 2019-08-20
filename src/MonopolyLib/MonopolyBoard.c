@@ -1,22 +1,10 @@
-#include "MonopolyBoardLib.h"
-#include "MonopolyLocationLib.h"
+#include "MonopolyBoard.h"
+#include "MonopolyLocation.h"
 
 #ifdef _TINSPIRE
 #else
 #include <stdlib.h>
 #endif
-
-struct MonopolyBoardSide
-{
-   MonopolyLocationLib* m_pLocations;
-   int m_nNumLocations;
-};
-
-struct MonopolyBoard
-{
-   struct MonopolyBoardSide* m_pBoardSides;
-   int m_nNumSides;
-};
 
 struct DefaultLocations
 {
@@ -28,7 +16,7 @@ struct DefaultLocations
    int nMortgage;
 } g_DefaultLocations[] = 
 {
-   //Name                   Type            Cost Rent Rent with houuses and hotel    Mortgage
+   //Name                   Type            Cost Rent Rent with houses and hotel     Mortgage
    { "Go",                   Go,             -1, -1,  { -1,  -1,  -1,   -1,   -1   },  -1 },
    { "Mediterranean Avenue", Property,       60,  2,  { 10,  30,  90,   160,  250  },  30 },
    { "Community Chest",      CommunityChest, -1, -1,  { -1,  -1,  -1,   -1,   -1   },  -1 },
@@ -71,7 +59,7 @@ struct DefaultLocations
    { "Boardwalk",            Property,       400, 50, { 200, 600, 1400, 1700, 2000 }, 200 }
 };
 
-result MonopolyBoardLibCreate( MonopolyBoardLib* api )
+result MonopolyBoardCreate( struct MonopolyBoard** ppBoard )
 {
    struct MonopolyBoard* pB;
 
@@ -81,90 +69,51 @@ result MonopolyBoardLibCreate( MonopolyBoardLib* api )
       return RESULT_OUT_OF_MEMORY;
    }
 
-   const int NumSides = 4;
-   const int NumPlacesPerSide = 10;
+   pB->m_ppLocations = NULL;
+   struct MonopolyLocation** ppLocations = malloc( sizeof( g_DefaultLocations ) / sizeof( g_DefaultLocations[0] ) * sizeof( struct MonopolyLocation* ) );
 
-   pB->m_pBoardSides = NULL;
-   struct MonopolyBoardSide* pSides = malloc( NumSides * sizeof( struct MonopolyBoard ) );
-
-   for ( int nSide = 0; nSide < NumSides; nSide++ )
+   for ( int nLocation = 0; nLocation < sizeof( g_DefaultLocations ) / sizeof( g_DefaultLocations[0] ); nLocation++ )
    {
-      struct MonopolyBoardSide* pSide = &pSides[nSide];
-      pSide->m_pLocations = malloc( NumPlacesPerSide * sizeof( MonopolyLocationLib ) );
-      for ( int nLocation = 0; nLocation < NumPlacesPerSide; nLocation++ )
+      ppLocations[nLocation] = NULL;
+      if ( RESULT_OK != MonopolyLocationCreate( &ppLocations[nLocation],
+                                                g_DefaultLocations[nLocation].pstrName,
+                                                g_DefaultLocations[nLocation].eType,
+                                                g_DefaultLocations[nLocation].nCost,
+                                                g_DefaultLocations[nLocation].nRent,
+                                                g_DefaultLocations[nLocation].naRentWithHousesHotel,
+                                                g_DefaultLocations[nLocation].nMortgage ) )
       {
-         MonopolyLocationLib* pLocation = &pSide->m_pLocations[nLocation];
-         if ( RESULT_OK != MonopolyLocationLibCreate( pLocation, 
-                                                      g_DefaultLocations[nLocation].pstrName,
-                                                      g_DefaultLocations[nLocation].eType,
-                                                      g_DefaultLocations[nLocation].nCost,
-                                                      g_DefaultLocations[nLocation].nRent,
-                                                      g_DefaultLocations[nLocation].naRentWithHousesHotel,
-                                                      g_DefaultLocations[nLocation].nMortgage ) )
-         {
-            //Rollback: TODO
-         }
+         //Rollback: TODO
       }
-      pSide->m_nNumLocations = NumPlacesPerSide;
    }
-   pB->m_pBoardSides = pSides;
-   pB->m_nNumSides = NumSides;
+   pB->m_ppLocations = ppLocations;
+   pB->m_nNumLocations = sizeof( g_DefaultLocations ) / sizeof( g_DefaultLocations[0] );
 
-   *api = pB;
+   *ppBoard = pB;
 
    return RESULT_OK;
 }
 
-result MonopolyBoardLibFree( MonopolyBoardLib* api )
+result MonopolyBoardFree( struct MonopolyBoard** ppBoard )
 {
    struct MonopolyBoard* pB;
 
-   pB = *api;
+   pB = *ppBoard;
 
-   struct MonopolyBoardSide* pSides = pB->m_pBoardSides;
-   for( int nSide = 0; nSide < pB->m_nNumSides; nSide++ )
+   for ( int nLocation = 0; nLocation < pB->m_nNumLocations; nLocation++ )
    {
-      struct MonopolyBoardSide* pSide = &pSides[nSide];
-
-      for( int nLocation = 0; nLocation < pSide->m_nNumLocations; nLocation++ )
-      {
-         MonopolyLocationLib* pLocation = &pSide->m_pLocations[nLocation];
-
-         MonopolyLocationLibFree( pLocation );
-      }
-      free( pSide->m_pLocations );
-      pSide->m_pLocations = NULL;
+      MonopolyLocationFree( &pB->m_ppLocations[nLocation] );
    }
-   free( pB->m_pBoardSides );
-   pB->m_pBoardSides = NULL;
+
+   free( pB->m_ppLocations );
+   pB->m_ppLocations = NULL;
 
    free( pB );
-   *api = NULL;
+   *ppBoard = NULL;
    return RESULT_OK;
 }
 
-MonopolyLocationLib MonopolyBoardGetSpot( MonopolyBoardLib* api, int nIndex )
+struct MonopolyLocation* MonopolyBoardGetSpot( struct MonopolyBoard* pBoard, int nIndex )
 {
-   struct MonopolyBoard* pB = ( struct MonopolyBoard* )api;
-
-   int nSpotIndex = 0;
-   struct MonopolyBoardSide* pSides = pB->m_pBoardSides;
-   for ( int nSide = 0; nSide < pB->m_nNumSides; nSide++ )
-   {
-      struct MonopolyBoardSide* pSide = &pSides[nSide];
-
-      for ( int nLocation = 0; nLocation < pSide->m_nNumLocations; nLocation++ )
-      {
-         MonopolyLocationLib* pLocation = &pSide->m_pLocations[nLocation];
-
-         if ( nSpotIndex == nIndex )
-         {
-            return *pLocation;
-         }
-
-         nSpotIndex++;
-      }
-   }
-
-   return NULL;
+   return pBoard->m_ppLocations[nIndex];
 }

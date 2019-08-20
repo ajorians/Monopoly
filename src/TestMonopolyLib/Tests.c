@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #endif
 
-#include <MonopolyGameLib.h>
-#include <MonopolyBoardLib.h>
-#include <MonopolyLocationLib.h>
+#include <MonopolyGame.h>
+#include <MonopolyBoard.h>
+#include <MonopolyLocation.h>
+#include <Result.h>
 
 #ifdef _TINSPIRE
 #define PRINT  nio_printf
@@ -26,12 +27,12 @@
 
 int TestConstruction()
 {
-   MonopolyGameLib api;
+   struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameLibCreate( &api ) )
+   if ( RESULT_OK != MonopolyGameCreate( &pGame ) )
       return TEST_FAILED;
 
-   if ( RESULT_OK != MonopolyGameLibFree( &api ) )
+   if ( RESULT_OK != MonopolyGameFree( &pGame ) )
       return TEST_FAILED;
 
    return TEST_SUCCEEDED;
@@ -39,16 +40,16 @@ int TestConstruction()
 
 int TestSomething()
 {
-   MonopolyGameLib api;
+   struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameLibCreate( &api ) )
+   if ( RESULT_OK != MonopolyGameCreate( &pGame ) )
       return TEST_FAILED;
 
-   MonopolyBoardLib board = MonopolyGameGetBoard( api );
-   MonopolyLocationLib spot = MonopolyBoardGetSpot( board, 0 );
-   const char* pstrName = MonopolyLocationGetName( spot );
+   struct MonopolyBoard* pBoard = MonopolyGameGetBoard( pGame );
+   struct MonopolyLocation* pSpot = MonopolyBoardGetSpot( pBoard, 0 );
+   const char* pstrName = MonopolyLocationGetName( pSpot );
 
-   if ( RESULT_OK != MonopolyGameLibFree( &api ) )
+   if ( RESULT_OK != MonopolyGameFree( &pGame ) )
       return TEST_FAILED;
 
    return TEST_SUCCEEDED;

@@ -29,22 +29,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MonopolyGameLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Result.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonopolyBoardLib.h">
+    <ClInclude Include="MonopolyBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonopolyLibTypes.h">
+    <ClInclude Include="MonopolyGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonopolyLocationLib.h">
+    <ClInclude Include="MonopolyLocation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MonopolyPlayerLib.h">
+    <ClInclude Include="MonopolyPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

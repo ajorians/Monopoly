@@ -1,4 +1,4 @@
-#include "MonopolyLocationLib.h"
+#include "MonopolyLocation.h"
 
 #ifdef _TINSPIRE
 #else
@@ -7,17 +7,7 @@
 #include <string.h>
 #endif
 
-struct MonopolyLocation
-{
-   char m_strName[64];
-   enum LocationType m_eLocationType;
-   int m_nCost;
-   int m_nRent;
-   int m_naRentWithHouseHotel[5];
-   int m_nMortgage;
-};
-
-result MonopolyLocationLibCreate( MonopolyLocationLib* api, const char* pstrName, enum LocationType eLocationType, int nCost, int nRent, int naRentWithHouseHotel[5], int nMortgate )
+result MonopolyLocationCreate( struct MonopolyLocation** ppLocation, const char* pstrName, enum LocationType eLocationType, int nCost, int nRent, int naRentWithHouseHotel[5], int nMortgate )
 {
    struct MonopolyLocation* pL;
 
@@ -33,25 +23,23 @@ result MonopolyLocationLibCreate( MonopolyLocationLib* api, const char* pstrName
    memcpy( pL->m_naRentWithHouseHotel, naRentWithHouseHotel, 5 * sizeof( int ) );
    pL->m_nMortgage = nMortgate;
 
-   *api = pL;
+   *ppLocation = pL;
 
    return RESULT_OK;
 }
 
-result MonopolyLocationLibFree( MonopolyLocationLib* api )
+result MonopolyLocationFree( struct MonopolyLocation** ppLocation )
 {
    struct MonopolyLocation* pL;
 
-   pL = *api;
+   pL = *ppLocation;
 
    free( pL );
-   *api = NULL;
+   *ppLocation = NULL;
    return RESULT_OK;
 }
 
-const char* MonopolyLocationGetName( MonopolyLocationLib api )
+const char* MonopolyLocationGetName( struct MonopolyLocation* pLocation )
 {
-   struct MonopolyLocation* pL = ( struct MonopolyLocation* )api;
-
-   return pL->m_strName;
+   return pLocation->m_strName;
 }

@@ -119,11 +119,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MonopolyBoardLib.h" />
-    <ClInclude Include="MonopolyGameLib.h" />
-    <ClInclude Include="MonopolyLibTypes.h" />
-    <ClInclude Include="MonopolyLocationLib.h" />
-    <ClInclude Include="MonopolyPlayerLib.h" />
+    <ClInclude Include="MonopolyBoard.h" />
+    <ClInclude Include="MonopolyGame.h" />
+    <ClInclude Include="MonopolyLocation.h" />
+    <ClInclude Include="MonopolyPlayer.h" />
     <ClInclude Include="Result.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-#include "MonopolyPlayerLib.h"
+#include "MonopolyPlayer.h"
 
 #ifdef _TINSPIRE
 #else
@@ -7,12 +7,7 @@
 #include <string.h>
 #endif
 
-struct MonopolyPlayer
-{
-   int m_nMoney;//TODO: Move
-};
-
-result MonopolyPlayerLibCreate( MonopolyPlayerLib* api )
+result MonopolyPlayerCreate( struct MonopolyPlayer** ppPlayer )
 {
    struct MonopolyPlayer* pP;
 
@@ -23,19 +18,19 @@ result MonopolyPlayerLibCreate( MonopolyPlayerLib* api )
    }
    pP->m_nMoney = 1500;
 
-   *api = pP;
+   *ppPlayer = pP;
 
    return RESULT_OK;
 }
 
-result MonopolyPlayerLibFree( MonopolyPlayerLib* api )
+result MonopolyPlayerFree( struct MonopolyPlayer** ppPlayer )
 {
    struct MonopolyPlayer* pP;
 
-   pP = *api;
+   pP = *ppPlayer;
 
    free( pP );
-   *api = NULL;
+   *ppPlayer = NULL;
    return RESULT_OK;
 }
 

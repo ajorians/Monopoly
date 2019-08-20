@@ -1,58 +1,49 @@
-#include "MonopolyGameLib.h"
+#include "MonopolyGame.h"
 
-#include "MonopolyBoardLib.h"
+#include "MonopolyBoard.h"
 
 #ifdef _TINSPIRE
 #else
 #include <stdlib.h>
 #endif
 
-struct MonopolyGame
+result MonopolyGameCreate( struct MonopolyGame** ppGame )
 {
-   int m_nTurnNumber;
+   struct MonopolyGame* pG;
 
-   MonopolyBoardLib m_Board;
-};
-
-result MonopolyGameLibCreate( MonopolyGameLib* api )
-{
-   struct MonopolyGame* pM;
-
-   pM = malloc( sizeof( struct MonopolyGame ) );
-   if ( pM == NULL )
+   pG = malloc( sizeof( struct MonopolyGame ) );
+   if ( pG == NULL )
    {//Out of memory
       return RESULT_OUT_OF_MEMORY;
    }
 
-   pM->m_nTurnNumber = 0;
-   MonopolyBoardLibCreate( &pM->m_Board );
+   pG->m_nTurnNumber = 0;
+   MonopolyBoardCreate( &pG->m_pBoard );
 
-   *api = pM;
+   *ppGame = pG;
 
    return RESULT_OK;
 }
 
-result MonopolyGameLibFree( MonopolyGameLib* api )
+result MonopolyGameFree( struct MonopolyGame** ppGame )
 {
-   struct MonopolyGame* pM;
+   struct MonopolyGame* pG;
 
-   pM = *api;
+   pG = *ppGame;
 
    //if ( pS->m_pBoard != NULL )
    //{
    //   free( pS->m_pBoard );
    //   pS->m_pBoard = NULL;
    //}
-   MonopolyBoardLibFree( &pM->m_Board );
+   MonopolyBoardFree( &pG->m_pBoard );
 
-   free( pM );
-   *api = NULL;
+   free( pG );
+   *ppGame = NULL;
    return RESULT_OK;
 }
 
-MonopolyBoardLib MonopolyGameGetBoard( MonopolyGameLib api )
+struct MonopolyBoard* MonopolyGameGetBoard( struct MonopolyGame* pGame )
 {
-   struct MonopolyGame* pM = ( struct MonopolyGame* )api;
-
-   return pM->m_Board;
+   return pGame->m_pBoard;
 }
