@@ -4,5 +4,6 @@
 typedef void* MonopolyGameLib;
 typedef void* MonopolyBoardLib;
 typedef void* MonopolyLocationLib;
+typedef void* MonopolyPlayerLib;
 
 #endif // MONOPOLYLIBTYPES_H

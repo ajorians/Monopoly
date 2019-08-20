@@ -24,6 +24,9 @@
     <ClCompile Include="MonopolyLocation.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MonopolyPlayer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MonopolyGameLib.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MonopolyLocationLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonopolyPlayerLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
