@@ -10,10 +10,14 @@
 struct MonopolyLocation
 {
    char m_strName[64];
+   enum LocationType m_eLocationType;
    int m_nCost;
+   int m_nRent;
+   int m_naRentWithHouseHotel[5];
+   int m_nMortgage;
 };
 
-result MonopolyLocationLibCreate( MonopolyLocationLib* api, const char* pstrName, int nCost )
+result MonopolyLocationLibCreate( MonopolyLocationLib* api, const char* pstrName, enum LocationType eLocationType, int nCost, int nRent, int naRentWithHouseHotel[5], int nMortgate )
 {
    struct MonopolyLocation* pL;
 
@@ -23,7 +27,11 @@ result MonopolyLocationLibCreate( MonopolyLocationLib* api, const char* pstrName
       return RESULT_OUT_OF_MEMORY;
    }
    strcpy( pL->m_strName, pstrName );
+   pL->m_eLocationType = eLocationType;
    pL->m_nCost = nCost;
+   pL->m_nRent = nRent;
+   memcpy( pL->m_naRentWithHouseHotel, naRentWithHouseHotel, 5 * sizeof( int ) );
+   pL->m_nMortgage = nMortgate;
 
    *api = pL;
 
