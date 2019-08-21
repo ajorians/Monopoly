@@ -17,6 +17,7 @@ result MonopolyPlayerCreate( struct MonopolyPlayer** ppPlayer )
       return RESULT_OUT_OF_MEMORY;
    }
    pP->m_nMoney = 1500;
+   pP->m_pLocation = NULL;
 
    *ppPlayer = pP;
 
@@ -34,3 +35,12 @@ result MonopolyPlayerFree( struct MonopolyPlayer** ppPlayer )
    return RESULT_OK;
 }
 
+void MonopolyLocationSetPlayerPosition( struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation )
+{
+   pPlayer->m_pLocation = pLocation;
+}
+
+struct MonopolyLocation* MonopolyPlayerGetLocation( struct MonopolyPlayer* pPlayer )
+{
+   return pPlayer->m_pLocation;
+}

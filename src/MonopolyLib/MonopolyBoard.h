@@ -16,4 +16,6 @@ result MonopolyBoardFree( struct MonopolyBoard** ppBoard );
 
 struct MonopolyLocation* MonopolyBoardGetSpot( struct MonopolyBoard* pBoard, int nIndex );
 
+struct MonopolyLocation* MonopolyBoardRelativeLocation( struct MonopolyBoard* pBoard, struct MonopolyLocation* pLocation, int offsetSpots );
+
 #endif // MONOPOLYBOARD_H

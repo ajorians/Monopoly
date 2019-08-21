@@ -4,6 +4,7 @@
 #ifdef _TINSPIRE
 #else
 #include <stdlib.h>
+#include <assert.h>
 #endif
 
 struct DefaultLocations
@@ -58,6 +59,8 @@ struct DefaultLocations
    { "Luxury Tax",           LuxuryTax,      -1, -1,  { -1,  -1,  -1,   -1,   -1   },  -1 },
    { "Boardwalk",            Property,       400, 50, { 200, 600, 1400, 1700, 2000 }, 200 }
 };
+
+int GetLocationIndex( struct MonopolyBoard* pBoard, struct MonopolyLocation* pLocation );
 
 result MonopolyBoardCreate( struct MonopolyBoard** ppBoard )
 {
@@ -116,4 +119,25 @@ result MonopolyBoardFree( struct MonopolyBoard** ppBoard )
 struct MonopolyLocation* MonopolyBoardGetSpot( struct MonopolyBoard* pBoard, int nIndex )
 {
    return pBoard->m_ppLocations[nIndex];
+}
+
+struct MonopolyLocation* MonopolyBoardRelativeLocation( struct MonopolyBoard* pBoard, struct MonopolyLocation* pLocation, int offsetSpots )
+{
+   int nIndex = GetLocationIndex( pBoard, pLocation ) + offsetSpots;
+   nIndex = nIndex % pBoard->m_nNumLocations;
+
+   return MonopolyBoardGetSpot( pBoard, nIndex );
+}
+
+int GetLocationIndex( struct MonopolyBoard* pBoard, struct MonopolyLocation* pLocation )
+{
+   for ( int i = 0; i < pBoard->m_nNumLocations; i++ )
+   {
+      if ( pBoard->m_ppLocations[i] == pLocation )
+      {
+         return i;
+      }
+   }
+   assert( 0 );
+   return -1;
 }

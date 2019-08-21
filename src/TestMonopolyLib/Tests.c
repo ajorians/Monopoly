@@ -8,6 +8,7 @@
 #include <MonopolyGame.h>
 #include <MonopolyBoard.h>
 #include <MonopolyLocation.h>
+#include <MonopolyPlayer.h>
 #include <Result.h>
 
 #ifdef _TINSPIRE
@@ -29,7 +30,7 @@ int TestConstruction()
 {
    struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameCreate( &pGame ) )
+   if ( RESULT_OK != MonopolyGameCreate( &pGame, 1 ) )
       return TEST_FAILED;
 
    if ( RESULT_OK != MonopolyGameFree( &pGame ) )
@@ -38,16 +39,20 @@ int TestConstruction()
    return TEST_SUCCEEDED;
 }
 
-int TestSomething()
+int TestWhosTurn()
 {
    struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameCreate( &pGame ) )
+   if ( RESULT_OK != MonopolyGameCreate( &pGame, 2 ) )
       return TEST_FAILED;
 
-   struct MonopolyBoard* pBoard = MonopolyGameGetBoard( pGame );
+   /*struct MonopolyBoard* pBoard = MonopolyGameGetBoard( pGame );
    struct MonopolyLocation* pSpot = MonopolyBoardGetSpot( pBoard, 0 );
-   const char* pstrName = MonopolyLocationGetName( pSpot );
+   const char* pstrName = MonopolyLocationGetName( pSpot );*/
+
+   MonopolyGamePlayerRollsForTurn( pGame, MonopolyGameWhosTurn( pGame ), NULL, NULL );
+
+   struct MonopolyLocation* pSpot = MonopolyPlayerGetLocation( MonopolyGameWhosTurn( pGame ) );
 
    if ( RESULT_OK != MonopolyGameFree( &pGame ) )
       return TEST_FAILED;
@@ -61,7 +66,7 @@ typedef int( *testfunc )( );
 testfunc g_Tests[] =
 {
    TestConstruction,
-   TestSomething
+   TestWhosTurn
 };
 
 void RunTests()
