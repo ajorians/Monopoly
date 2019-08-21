@@ -130,6 +130,29 @@ void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlay
    pGame->m_pPlayersTurn = GetPlayer( pGame, nPlayerIndex );
 }
 
+void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch )
+{
+   //Somebody has to be on this property in order to purchase it; even for auction
+   int nSomebodyOnSpot = 0;
+   for ( int i = 0; i < pGame->m_nNumPlayers; i++ )
+   {
+      if ( MonopolyPlayerGetLocation( GetPlayer( pGame, i ) ) == pLocation )
+      {
+         nSomebodyOnSpot = 1;
+         break;
+      }
+   }
+
+   if ( nSomebodyOnSpot == 0 )
+   {
+      assert( 0 );
+      return;
+   }
+
+   pLocation->m_pOwner = pPlayer;
+   pPlayer->m_nMoney -= howMuch;
+}
+
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex )
 {
    assert( GetPlayerIndex( pGame, pGame->m_ppPlayers[nIndex] ) == nIndex );

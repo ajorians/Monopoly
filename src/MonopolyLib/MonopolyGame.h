@@ -30,4 +30,7 @@ struct MonopolyPlayer* MonopolyGameWhosTurn( struct MonopolyGame* pGame );
 void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling );
 void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn );
 
+//Used for Purchasing and auctions.  Trades don't use this
+void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch );
+
 #endif // MONOPOLYGAME_H

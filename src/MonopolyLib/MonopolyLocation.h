@@ -3,6 +3,8 @@
 
 #include "Result.h"
 
+struct MonopolyPlayer;
+
 enum LocationType
 {
    Go,
@@ -26,6 +28,7 @@ struct MonopolyLocation
    int m_nRent;
    int m_naRentWithHouseHotel[5];
    int m_nMortgage;
+   struct MonopolyPlayer* m_pOwner;
 };
 
 result MonopolyLocationCreate( struct MonopolyLocation** ppLocation, const char* pstrName, enum LocationType eLocationType, int nCost, int nRent, int naRentWithHouseHotel[5], int nMortgate );
