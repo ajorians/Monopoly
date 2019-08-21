@@ -54,6 +54,8 @@ int TestWhosTurn()
 
    struct MonopolyLocation* pSpot = MonopolyPlayerGetLocation( MonopolyGameWhosTurn( pGame ) );
 
+   MonopolyGameEndCurrentTurn( pGame, MonopolyGameWhosTurn( pGame ) );
+
    if ( RESULT_OK != MonopolyGameFree( &pGame ) )
       return TEST_FAILED;
 

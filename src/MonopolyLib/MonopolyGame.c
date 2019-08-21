@@ -11,6 +11,7 @@
 #endif
 
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex );
+int GetPlayerIndex( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer );
 
 result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers )
 {
@@ -109,8 +110,44 @@ void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct Monopoly
    MonopolyLocationSetPlayerPosition( pPlayerRolling, pNewLocation );
 }
 
+void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn )
+{
+   if ( MonopolyGameWhosTurn( pGame ) != pPlayerEndingTurn )
+   {
+      assert( 0 );
+      return;
+   }
+
+   int nPlayerIndex = GetPlayerIndex( pGame, pPlayerEndingTurn );
+
+   //TODO: Skip over bankrupted players
+
+   nPlayerIndex++;
+   if ( nPlayerIndex >= pGame->m_nNumPlayers )
+   {
+      pGame->m_nTurnNumber++;
+   }
+   nPlayerIndex %= pGame->m_nNumPlayers;
+
+   pGame->m_pPlayersTurn = GetPlayer( pGame, nPlayerIndex );
+}
+
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex )
 {
+   assert( GetPlayerIndex( pGame, pGame->m_ppPlayers[nIndex] ) == nIndex );
    return pGame->m_ppPlayers[nIndex];
+}
+
+int GetPlayerIndex( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer )
+{
+   for ( int i = 0; i < pGame->m_nNumPlayers; i++ )
+   {
+      if ( pGame->m_ppPlayers[i] == pPlayer )
+      {
+         return i;
+      }
+   }
+   assert( 0 );
+   return -1;
 }
 

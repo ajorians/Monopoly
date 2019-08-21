@@ -26,5 +26,6 @@ struct MonopolyBoard* MonopolyGameGetBoard( struct MonopolyGame* pGame );
 struct MonopolyPlayer* MonopolyGameWhosTurn( struct MonopolyGame* pGame );
 
 void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling, int* pDice1, int* pDice2 );
+void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn );
 
 #endif // MONOPOLYGAME_H

@@ -43,6 +43,10 @@
 *.idb
 *.ilk
 *.ipch
+*.VC.db-shm
+*.VC.db-wal
+*.enc
+applicationhost.config
 
 
 #Nspire files
