@@ -50,7 +50,7 @@ int TestWhosTurn()
    struct MonopolyLocation* pSpot = MonopolyBoardGetSpot( pBoard, 0 );
    const char* pstrName = MonopolyLocationGetName( pSpot );*/
 
-   MonopolyGamePlayerRollsForTurn( pGame, MonopolyGameWhosTurn( pGame ), NULL, NULL );
+   MonopolyGamePlayerRollsForTurn( pGame, MonopolyGameWhosTurn( pGame ) );
 
    struct MonopolyLocation* pSpot = MonopolyPlayerGetLocation( MonopolyGameWhosTurn( pGame ) );
 

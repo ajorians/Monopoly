@@ -3,6 +3,7 @@
 #include "MonopolyBoard.h"
 #include "MonopolyPlayer.h"
 #include "MonopolyLocation.h"
+#include "MonopolyDice.h"
 
 #ifdef _TINSPIRE
 #else
@@ -49,6 +50,8 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers )
 
    pG->m_pPlayersTurn = pG->m_ppPlayers[0];
 
+   MonopolyDiceCreate( &pG->m_pDice );
+
    *ppGame = pG;
 
    return RESULT_OK;
@@ -66,6 +69,7 @@ result MonopolyGameFree( struct MonopolyGame** ppGame )
    //   pS->m_pBoard = NULL;
    //}
    MonopolyBoardFree( &pG->m_pBoard );
+   MonopolyDiceFree( &pG->m_pDice );
 
    free( pG );
    *ppGame = NULL;
@@ -82,7 +86,7 @@ struct MonopolyPlayer* MonopolyGameWhosTurn( struct MonopolyGame* pGame )
    return pGame->m_pPlayersTurn;
 }
 
-void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling, int* pDice1, int* pDice2 )
+void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling )
 {
    if ( MonopolyGameWhosTurn( pGame ) != pPlayerRolling )
    {
@@ -90,19 +94,13 @@ void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct Monopoly
       return;
    }
 
-   int dice1 = ( rand() % 6 ) + 1;
-   if ( pDice1 )
-      *pDice1 = dice1;
-
-   int dice2 = ( rand() % 6 ) + 1;
-   if ( pDice2 )
-      *pDice2 = dice2;
+   MonopolyDiceRoll( pGame->m_pDice );
 
    //TODO: Add to roll history
 
    //TODO Check for doubles
 
-   int total = dice1 + dice2;
+   int total = MonopolyDiceGetTotal( pGame->m_pDice );
 
    struct MonopolyLocation* pCurrentLocation = MonopolyPlayerGetLocation( pPlayerRolling );
    struct MonopolyLocation* pNewLocation = MonopolyBoardRelativeLocation( pGame->m_pBoard, pCurrentLocation, total );

@@ -5,6 +5,7 @@
 
 struct MonopolyBoard;
 struct MonopolyPlayer;
+struct MonopolyDice;
 
 struct MonopolyGame
 {
@@ -15,6 +16,7 @@ struct MonopolyGame
    int m_nNumPlayers;
 
    struct MonopolyPlayer* m_pPlayersTurn;
+   struct MonopolyDice* m_pDice;
 };
 
 result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers );
@@ -25,7 +27,7 @@ struct MonopolyBoard* MonopolyGameGetBoard( struct MonopolyGame* pGame );
 //Note it could be player 1's turn but player 2 might need to settle debt, accept trade, or other action first
 struct MonopolyPlayer* MonopolyGameWhosTurn( struct MonopolyGame* pGame );
 
-void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling, int* pDice1, int* pDice2 );
+void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling );
 void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn );
 
 #endif // MONOPOLYGAME_H
