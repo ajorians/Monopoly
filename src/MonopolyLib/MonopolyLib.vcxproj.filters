@@ -56,5 +56,8 @@
     <ClInclude Include="MonopolyGameFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MonopolyCallbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

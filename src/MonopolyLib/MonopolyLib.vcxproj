@@ -120,6 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MonopolyBoard.h" />
+    <ClInclude Include="MonopolyCallbacks.h" />
     <ClInclude Include="MonopolyDice.h" />
     <ClInclude Include="MonopolyGame.h" />
     <ClInclude Include="MonopolyGameFactory.h" />

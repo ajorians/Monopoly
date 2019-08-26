@@ -2,6 +2,7 @@
 #define MONOPOLYGAME_H
 
 #include "Result.h"
+#include "MonopolyCallbacks.h"
 
 struct MonopolyBoard;
 struct MonopolyPlayer;
@@ -19,7 +20,7 @@ struct MonopolyGame
    struct MonopolyDice* m_pDice;
 };
 
-result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers );
+result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers, struct MonopolyPlayerCallbacks* pPlayerCallbacks );
 result MonopolyGameFree( struct MonopolyGame** ppGame );
 
 struct MonopolyBoard* MonopolyGameGetBoard( struct MonopolyGame* pGame );

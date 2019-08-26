@@ -14,7 +14,7 @@
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex );
 int GetPlayerIndex( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer );
 
-result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers )
+result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers, struct MonopolyPlayerCallbacks* pPlayerCallbacks )
 {
    struct MonopolyGame* pG;
 
@@ -32,7 +32,7 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers )
 
    for ( int nPlayer = 0; nPlayer < numPlayers; nPlayer++ )
    {
-      if ( RESULT_OK != MonopolyPlayerCreate( &ppPlayers[nPlayer] ) )
+      if ( RESULT_OK != MonopolyPlayerCreate( &ppPlayers[nPlayer], pPlayerCallbacks ) )
       {
          //Rollback: TODO
       }

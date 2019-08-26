@@ -7,7 +7,7 @@
 #include <string.h>
 #endif
 
-result MonopolyPlayerCreate( struct MonopolyPlayer** ppPlayer )
+result MonopolyPlayerCreate( struct MonopolyPlayer** ppPlayer, struct MonopolyPlayerCallbacks* pPlayerCallbacks )
 {
    struct MonopolyPlayer* pP;
 
@@ -18,6 +18,7 @@ result MonopolyPlayerCreate( struct MonopolyPlayer** ppPlayer )
    }
    pP->m_nMoney = 1500;
    pP->m_pLocation = NULL;
+   pP->m_callbackPlayerMoved = pPlayerCallbacks->m_PlayerMovedCallback;
 
    *ppPlayer = pP;
 
@@ -37,7 +38,11 @@ result MonopolyPlayerFree( struct MonopolyPlayer** ppPlayer )
 
 void MonopolyLocationSetPlayerPosition( struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation )
 {
+   struct MonopolyLocation* pOldLocation = pPlayer->m_pLocation;
    pPlayer->m_pLocation = pLocation;
+
+   if ( pPlayer->m_callbackPlayerMoved )
+      ( pPlayer->m_callbackPlayerMoved )( pPlayer, pOldLocation, pLocation );
 }
 
 struct MonopolyLocation* MonopolyPlayerGetLocation( struct MonopolyPlayer* pPlayer )

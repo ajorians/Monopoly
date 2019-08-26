@@ -19,6 +19,7 @@ result MonopolyGameFactoryCreate( struct MonopolyGameFactory** ppGameFactory )
    }
 
    pF->m_nNumberOfPlayers = 0;
+   pF->m_PlayerCallbacks.m_PlayerMovedCallback = NULL;
 
    *ppGameFactory = pF;
 
@@ -39,7 +40,7 @@ result MonopolyGameFactoryFree( struct MonopolyGameFactory** ppGameFactory )
 struct MonopolyGame* MonopolyGameFactoryCreateGame( struct MonopolyGameFactory* pGameFactory )
 {
    struct MonopolyGame* pGame = NULL;
-   MonopolyGameCreate( &pGame, pGameFactory->m_nNumberOfPlayers );//TODO: Check result
+   MonopolyGameCreate( &pGame, pGameFactory->m_nNumberOfPlayers, &pGameFactory->m_PlayerCallbacks );//TODO: Check result
 
    return pGame;
 }
@@ -49,4 +50,11 @@ result MonopolyGameFactorySetNumberOfPlayers( struct MonopolyGameFactory* pGameF
    pGameFactory->m_nNumberOfPlayers = nNumPlayers;
    return RESULT_OK;
 }
+
+result MonopolyGameFactorySetPlayerCallbacks( struct MonopolyGameFactory* pGameFactory, struct MonopolyPlayerCallbacks* pPlayerCallbacks )
+{
+   pGameFactory->m_PlayerCallbacks.m_PlayerMovedCallback = pPlayerCallbacks->m_PlayerMovedCallback;
+   return RESULT_OK;
+}
+
 
