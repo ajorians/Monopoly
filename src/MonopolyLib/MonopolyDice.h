@@ -18,4 +18,4 @@ int MonopolyDiceIsDoubles( struct MonopolyDice* pDice );
 void MonopolyDiceGetLastRoll( struct MonopolyDice* pDice, int* pDice1, int* pDice2 );
 
 
-#endif // MONOPOLYLOCATION_H
+#endif // MONOPOLYDICE_H

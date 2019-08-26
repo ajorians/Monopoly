@@ -30,6 +30,9 @@
     <ClCompile Include="MonopolyDice.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MonopolyGameFactory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Result.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MonopolyDice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonopolyGameFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

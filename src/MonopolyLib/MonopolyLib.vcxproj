@@ -122,6 +122,7 @@
     <ClInclude Include="MonopolyBoard.h" />
     <ClInclude Include="MonopolyDice.h" />
     <ClInclude Include="MonopolyGame.h" />
+    <ClInclude Include="MonopolyGameFactory.h" />
     <ClInclude Include="MonopolyLocation.h" />
     <ClInclude Include="MonopolyPlayer.h" />
     <ClInclude Include="Result.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="MonopolyBoard.c" />
     <ClCompile Include="MonopolyDice.c" />
     <ClCompile Include="MonopolyGame.c" />
+    <ClCompile Include="MonopolyGameFactory.c" />
     <ClCompile Include="MonopolyLocation.c" />
     <ClCompile Include="MonopolyPlayer.c" />
   </ItemGroup>

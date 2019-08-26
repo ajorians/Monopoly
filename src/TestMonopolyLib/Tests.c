@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #endif
 
+#include <MonopolyGameFactory.h>
 #include <MonopolyGame.h>
 #include <MonopolyBoard.h>
 #include <MonopolyLocation.h>
@@ -28,9 +29,18 @@
 
 int TestConstruction()
 {
+   struct MonopolyGameFactory* pGameFactory;
    struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameCreate( &pGame, 1 ) )
+   if ( RESULT_OK != MonopolyGameFactoryCreate( &pGameFactory ) )
+      return TEST_FAILED;
+
+   if ( RESULT_OK != MonopolyGameFactorySetNumberOfPlayers( pGameFactory, 2 ) )
+      return TEST_FAILED;
+
+   pGame = MonopolyGameFactoryCreateGame( pGameFactory );
+
+   if ( RESULT_OK != MonopolyGameFactoryFree( &pGameFactory ) )
       return TEST_FAILED;
 
    if ( RESULT_OK != MonopolyGameFree( &pGame ) )
@@ -41,9 +51,18 @@ int TestConstruction()
 
 int TestWhosTurn()
 {
+   struct MonopolyGameFactory* pGameFactory;
    struct MonopolyGame* pGame;
    PRINT_FUNC;
-   if ( RESULT_OK != MonopolyGameCreate( &pGame, 2 ) )
+   if ( RESULT_OK != MonopolyGameFactoryCreate( &pGameFactory ) )
+      return TEST_FAILED;
+
+   if ( RESULT_OK != MonopolyGameFactorySetNumberOfPlayers( pGameFactory, 2 ) )
+      return TEST_FAILED;
+
+   pGame = MonopolyGameFactoryCreateGame( pGameFactory );
+
+   if ( RESULT_OK != MonopolyGameFactoryFree( &pGameFactory ) )
       return TEST_FAILED;
 
    /*struct MonopolyBoard* pBoard = MonopolyGameGetBoard( pGame );

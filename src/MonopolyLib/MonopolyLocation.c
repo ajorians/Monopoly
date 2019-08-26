@@ -23,6 +23,8 @@ result MonopolyLocationCreate( struct MonopolyLocation** ppLocation, const char*
    memcpy( pL->m_naRentWithHouseHotel, naRentWithHouseHotel, 5 * sizeof( int ) );
    pL->m_nMortgage = nMortgate;
 
+   pL->m_pOwner = NULL;
+
    *ppLocation = pL;
 
    return RESULT_OK;
