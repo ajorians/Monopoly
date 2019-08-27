@@ -2,6 +2,7 @@
 #define MONOPOLYBOARD_H
 
 #include "Result.h"
+#include "MonopolyCallbacks.h"
 
 struct MonopolyLocation;
 
@@ -11,7 +12,7 @@ struct MonopolyBoard
    int m_nNumLocations;
 };
 
-result MonopolyBoardCreate( struct MonopolyBoard** ppBoard );
+result MonopolyBoardCreate( struct MonopolyBoard** ppBoard, struct MonopolyBoardCallbacks* pCallbacks );
 result MonopolyBoardFree( struct MonopolyBoard** ppBoard );
 
 struct MonopolyLocation* MonopolyBoardGetSpot( struct MonopolyBoard* pBoard, int nIndex );

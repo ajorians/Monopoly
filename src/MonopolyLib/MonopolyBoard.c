@@ -62,7 +62,7 @@ struct DefaultLocations
 
 int GetLocationIndex( struct MonopolyBoard* pBoard, struct MonopolyLocation* pLocation );
 
-result MonopolyBoardCreate( struct MonopolyBoard** ppBoard )
+result MonopolyBoardCreate( struct MonopolyBoard** ppBoard, struct MonopolyBoardCallbacks* pCallbacks )
 {
    struct MonopolyBoard* pB;
 
@@ -84,7 +84,8 @@ result MonopolyBoardCreate( struct MonopolyBoard** ppBoard )
                                                 g_DefaultLocations[nLocation].nCost,
                                                 g_DefaultLocations[nLocation].nRent,
                                                 g_DefaultLocations[nLocation].naRentWithHousesHotel,
-                                                g_DefaultLocations[nLocation].nMortgage ) )
+                                                g_DefaultLocations[nLocation].nMortgage,
+                                                pCallbacks->m_pLocationCallbacks ) )
       {
          //Rollback: TODO
       }

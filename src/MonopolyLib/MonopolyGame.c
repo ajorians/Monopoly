@@ -14,7 +14,10 @@
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex );
 int GetPlayerIndex( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer );
 
-result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers, struct MonopolyPlayerCallbacks* pPlayerCallbacks )
+result MonopolyGameCreate( struct MonopolyGame** ppGame,
+                           int numPlayers,
+                           struct MonopolyPlayerCallbacks* pPlayerCallbacks,
+                           struct MonopolyBoardCallbacks* pBoardCallbacks )
 {
    struct MonopolyGame* pG;
 
@@ -25,7 +28,7 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame, int numPlayers, struct 
    }
 
    pG->m_nTurnNumber = 0;
-   MonopolyBoardCreate( &pG->m_pBoard );
+   MonopolyBoardCreate( &pG->m_pBoard, pBoardCallbacks );
 
    pG->m_ppPlayers = NULL;
    struct MonopolyPlayer** ppPlayers = malloc( numPlayers * sizeof( struct MonopolyPlayer* ) );

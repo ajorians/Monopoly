@@ -12,6 +12,12 @@ struct MonopolyGameFactory
 
    //Player callbacks
    struct MonopolyPlayerCallbacks m_PlayerCallbacks;
+
+   //Location callbacks
+   struct MonopolyLocationCallbacks m_LocationCallbacks;
+
+   //Board callbacks
+   struct MonopolyBoardCallbacks m_BoardCallbacks;
 };
 
 result MonopolyGameFactoryCreate( struct MonopolyGameFactory** ppGameFactory );

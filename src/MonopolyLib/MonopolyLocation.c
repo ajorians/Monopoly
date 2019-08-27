@@ -7,7 +7,14 @@
 #include <string.h>
 #endif
 
-result MonopolyLocationCreate( struct MonopolyLocation** ppLocation, const char* pstrName, enum LocationType eLocationType, int nCost, int nRent, int naRentWithHouseHotel[5], int nMortgate )
+result MonopolyLocationCreate( struct MonopolyLocation** ppLocation,
+                               const char* pstrName,
+                               enum LocationType eLocationType,
+                               int nCost,
+                               int nRent,
+                               int naRentWithHouseHotel[5],
+                               int nMortgate,
+                               struct MonopolyLocationCallbacks* pLocationCallbacks )
 {
    struct MonopolyLocation* pL;
 
@@ -24,6 +31,10 @@ result MonopolyLocationCreate( struct MonopolyLocation** ppLocation, const char*
    pL->m_nMortgage = nMortgate;
 
    pL->m_pOwner = NULL;
+
+   pL->m_eBuildings = NothingBuilt;
+
+   pL->m_callbackBuildingsChanged = pLocationCallbacks->m_BuildingsChangedCallback;
 
    *ppLocation = pL;
 
