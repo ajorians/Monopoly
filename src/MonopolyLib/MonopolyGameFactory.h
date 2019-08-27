@@ -18,6 +18,9 @@ struct MonopolyGameFactory
 
    //Board callbacks
    struct MonopolyBoardCallbacks m_BoardCallbacks;
+
+   //Dice callbacks
+   struct MonopolyDiceCallbacks m_DiceCallbacks;
 };
 
 result MonopolyGameFactoryCreate( struct MonopolyGameFactory** ppGameFactory );

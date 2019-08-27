@@ -7,7 +7,7 @@
 #include <string.h>
 #endif
 
-result MonopolyDiceCreate( struct MonopolyDice** ppDice )
+result MonopolyDiceCreate( struct MonopolyDice** ppDice, struct MonopolyDiceCallbacks* pDiceCallbacks )
 {
    struct MonopolyDice* pD;
 
@@ -18,6 +18,8 @@ result MonopolyDiceCreate( struct MonopolyDice** ppDice )
    }
    pD->m_nDice1 = 0;
    pD->m_nDice2 = 0;
+
+   pD->m_callbackDiceRolled = pDiceCallbacks->m_DiceRolledCallback;
 
    *ppDice = pD;
 
@@ -42,6 +44,9 @@ void MonopolyDiceRoll( struct MonopolyDice* pDice )
 
    int dice2 = ( rand() % 6 ) + 1;
    pDice->m_nDice2 = dice2;
+
+   int arrValues[2] = { dice1, dice2 };
+   ( pDice->m_callbackDiceRolled )( pDice, 2, arrValues );
 }
 
 int MonopolyDiceGetTotal( struct MonopolyDice* pDice )

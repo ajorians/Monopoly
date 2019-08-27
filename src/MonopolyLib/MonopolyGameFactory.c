@@ -23,6 +23,7 @@ result MonopolyGameFactoryCreate( struct MonopolyGameFactory** ppGameFactory )
    pF->m_LocationCallbacks.m_BuildingsChangedCallback = NULL;
    pF->m_BoardCallbacks.m_pLocationCallbacks = &pF->m_LocationCallbacks;
    pF->m_BoardCallbacks.m_SomethingChangedCallback = NULL;
+   pF->m_DiceCallbacks.m_DiceRolledCallback = NULL;
 
    *ppGameFactory = pF;
 
@@ -46,7 +47,8 @@ struct MonopolyGame* MonopolyGameFactoryCreateGame( struct MonopolyGameFactory* 
    MonopolyGameCreate( &pGame,
                        pGameFactory->m_nNumberOfPlayers,
                        &pGameFactory->m_PlayerCallbacks,
-                       &pGameFactory->m_BoardCallbacks );//TODO: Check result
+                       &pGameFactory->m_BoardCallbacks,
+                       &pGameFactory->m_DiceCallbacks );//TODO: Check result
 
    return pGame;
 }

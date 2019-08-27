@@ -23,7 +23,8 @@ struct MonopolyGame
 result MonopolyGameCreate( struct MonopolyGame** ppGame,
                            int numPlayers,
                            struct MonopolyPlayerCallbacks* pPlayerCallbacks,
-                           struct MonopolyBoardCallbacks* pBoardCallbacks );
+                           struct MonopolyBoardCallbacks* pBoardCallbacks,
+                           struct MonopolyDiceCallbacks* pDiceCallbacks );
 result MonopolyGameFree( struct MonopolyGame** ppGame );
 
 struct MonopolyBoard* MonopolyGameGetBoard( struct MonopolyGame* pGame );

@@ -2,7 +2,9 @@
 #define MONOPOLYCALLBACKS_H
 
 struct MonopolyPlayer;
+struct MonopolyBoard;
 struct MonopolyLocation;
+struct MonopolyDice;
 enum BuildType;
 
 //Player callbacks
@@ -15,6 +17,9 @@ typedef void( *LocationBuildingChangedFunc )( struct MonopolyLocation* pLocation
 typedef void( *BoardUnknownFunc )( struct MonopolyBoard* pBoard, int nTODONotYes );
 
 //Game callbacks
+
+//Dice callbacks
+typedef void( *DiceRolledFunc )( struct MonopolyDice* pDice, int nNumDice, int arrDiceValues[] );
 
 //
 struct MonopolyPlayerCallbacks
@@ -32,6 +37,11 @@ struct MonopolyBoardCallbacks
    BoardUnknownFunc m_SomethingChangedCallback;
 
    struct MonopolyLocationCallbacks* m_pLocationCallbacks;
+};
+
+struct MonopolyDiceCallbacks
+{
+   DiceRolledFunc m_DiceRolledCallback;
 };
 
 #endif // MONOPOLYCALLBACKS_H
