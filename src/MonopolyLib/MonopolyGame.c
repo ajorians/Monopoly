@@ -47,6 +47,8 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame,
    pG->m_callbackPropertyPurchased = pGameCallbacks->m_PropertyPurchasedCallback;
    pG->m_callbackPropertyDeclinedPurchase = pGameCallbacks->m_PropertyDeclinedPurchaseCallback;
 
+   pG->m_pResponseHead = NULL;
+
    //Set all players on start position
    struct MonopolyLocation* pStartOnGo = MonopolyBoardGetSpot( pG->m_pBoard, 0 );
    assert( pStartOnGo->m_eLocationType == Go );
@@ -56,6 +58,12 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame,
    }
 
    pG->m_pPlayersTurn = pG->m_ppPlayers[0];
+   struct MonopolyGameAwaitingResponse* pResponse = malloc( sizeof( struct MonopolyGameAwaitingResponse ) );
+   pResponse->m_eResponseWaitingOn = RollForTurn;
+   pResponse->m_pPlayerWaitingOn = pG->m_pPlayersTurn;
+   pResponse->m_pNext = pG->m_pResponseHead;
+
+   pG->m_pResponseHead = pResponse;
 
    MonopolyDiceCreate( &pG->m_pDice, pDiceCallbacks );
 
@@ -101,6 +109,15 @@ void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct Monopoly
       return;
    }
 
+   struct MonopolyGameAwaitingResponse* pResponse = pGame->m_pResponseHead;
+   if ( pResponse->m_eResponseWaitingOn != RollForTurn || pResponse->m_pPlayerWaitingOn != pPlayerRolling )
+   {
+      return;//TODO: Add error code
+   }
+
+   pGame->m_pResponseHead = pResponse->m_pNext;
+   free( pResponse );
+
    MonopolyDiceRoll( pGame->m_pDice );
 
    //TODO: Add to roll history
@@ -113,6 +130,17 @@ void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct Monopoly
    struct MonopolyLocation* pNewLocation = MonopolyBoardRelativeLocation( pGame->m_pBoard, pCurrentLocation, total );
 
    MonopolyLocationSetPlayerPosition( pPlayerRolling, pNewLocation );
+
+   if ( MonopolyLocationIsPurchasableLocation( pNewLocation ) && pNewLocation->m_pOwner == NULL )
+   {
+      //Do you want to buy this property?
+      struct MonopolyGameAwaitingResponse* pResponseWantToBuy = malloc( sizeof( struct MonopolyGameAwaitingResponse ) );
+      pResponseWantToBuy->m_eResponseWaitingOn = PropertyForPurchase;
+      pResponseWantToBuy->m_pPlayerWaitingOn = pPlayerRolling;
+      pResponseWantToBuy->m_pNext = pGame->m_pResponseHead;
+
+      pGame->m_pResponseHead = pResponseWantToBuy;
+   }
 }
 
 void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn )
@@ -121,6 +149,13 @@ void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlay
    {
       assert( 0 );
       return;
+   }
+
+   struct MonopolyGameAwaitingResponse* pResponse = pGame->m_pResponseHead;
+   if ( pResponse != NULL )
+   {
+      //Something wasn't finished yet.  Perhaps a player must mortgage or something.  Cannot end turn.
+      return;//TODO: Add error code
    }
 
    int nPlayerIndex = GetPlayerIndex( pGame, pPlayerEndingTurn );
@@ -135,6 +170,15 @@ void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlay
    nPlayerIndex %= pGame->m_nNumPlayers;
 
    pGame->m_pPlayersTurn = GetPlayer( pGame, nPlayerIndex );
+
+   //TODO check for game over
+
+   struct MonopolyGameAwaitingResponse* pResponseRollForTurn = malloc( sizeof( struct MonopolyGameAwaitingResponse ) );
+   pResponseRollForTurn->m_eResponseWaitingOn = RollForTurn;
+   pResponseRollForTurn->m_pPlayerWaitingOn = pGame->m_pPlayersTurn;
+   pResponseRollForTurn->m_pNext = pGame->m_pResponseHead;
+
+   pGame->m_pResponseHead = pResponse;
 }
 
 void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch )

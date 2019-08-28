@@ -8,6 +8,20 @@ struct MonopolyBoard;
 struct MonopolyPlayer;
 struct MonopolyDice;
 
+enum ResponseWaitingType
+{
+   RollForTurn,
+   PropertyForPurchase
+};
+
+struct MonopolyGameAwaitingResponse
+{
+   enum ResponseWaitingType m_eResponseWaitingOn;
+   struct MonopolyPlayer* m_pPlayerWaitingOn;
+
+   struct MonopolyGameAwaitingResponse* m_pNext;
+};
+
 struct MonopolyGame
 {
    int m_nTurnNumber;
@@ -21,6 +35,8 @@ struct MonopolyGame
 
    GamePropertyPurchasedFunc m_callbackPropertyPurchased;
    GamePropertyDeclinedPurchasedFunc m_callbackPropertyDeclinedPurchase;
+
+   struct MonopolyGameAwaitingResponse* m_pResponseHead;
 };
 
 result MonopolyGameCreate( struct MonopolyGame** ppGame,

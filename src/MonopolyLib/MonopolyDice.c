@@ -46,7 +46,11 @@ void MonopolyDiceRoll( struct MonopolyDice* pDice )
    pDice->m_nDice2 = dice2;
 
    int arrValues[2] = { dice1, dice2 };
-   ( pDice->m_callbackDiceRolled )( pDice, 2, arrValues );
+
+   if ( pDice->m_callbackDiceRolled )
+   {
+      ( pDice->m_callbackDiceRolled )( pDice, 2, arrValues );
+   }
 }
 
 int MonopolyDiceGetTotal( struct MonopolyDice* pDice )
