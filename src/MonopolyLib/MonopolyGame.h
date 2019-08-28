@@ -11,13 +11,15 @@ struct MonopolyDice;
 enum ResponseWaitingType
 {
    RollForTurn,
-   PropertyForPurchase
+   PropertyForPurchase,
+   PayAmount
 };
 
 struct MonopolyGameAwaitingResponse
 {
    enum ResponseWaitingType m_eResponseWaitingOn;
    struct MonopolyPlayer* m_pPlayerWaitingOn;
+   int m_nAmountToPayBank;
 
    struct MonopolyGameAwaitingResponse* m_pNext;
 };
@@ -56,8 +58,9 @@ void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct Monopoly
 void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn );
 
 //Used for Purchasing.  Trades don't use this
-void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch );
+void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation );
 
 void MonopolyGamePlayerDeclinesPropertyPurchase( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation );
+//TODO Add bidding methods.  For now assuming no actions
 
 #endif // MONOPOLYGAME_H

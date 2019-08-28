@@ -181,7 +181,7 @@ void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlay
    pGame->m_pResponseHead = pResponse;
 }
 
-void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch )
+void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation )
 {
    //Somebody has to be on this property in order to purchase it; even for auction
    int nSomebodyOnSpot = 0;
@@ -200,17 +200,42 @@ void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct Mon
       return;
    }
 
+   struct MonopolyGameAwaitingResponse* pResponse = pGame->m_pResponseHead;
+   if ( pResponse == NULL || pResponse->m_eResponseWaitingOn != PropertyForPurchase )
+   {
+      //Wait.  Weren't we expecting a property for purchase
+      assert( 0 );
+      return;//TODO: Add error code
+   }
+
+   pGame->m_pResponseHead = pResponse->m_pNext;
+   free( pResponse );
+
    pLocation->m_pOwner = pPlayer;
-   pPlayer->m_nMoney -= howMuch;
+   struct MonopolyGameAwaitingResponse* pResponsePayAmount = malloc( sizeof( struct MonopolyGameAwaitingResponse ) );
+   pResponsePayAmount->m_eResponseWaitingOn = RollForTurn;
+   pResponsePayAmount->m_pPlayerWaitingOn = pPlayer;
+   pResponsePayAmount->m_nAmountToPayBank = pLocation->m_nCost;
+   pResponsePayAmount->m_pNext = pGame->m_pResponseHead;
+
+   pGame->m_pResponseHead = pResponse;
 
    if ( pGame->m_callbackPropertyPurchased != NULL )
    {
-      ( pGame->m_callbackPropertyPurchased )( pGame, pPlayer, pLocation, howMuch );
+      ( pGame->m_callbackPropertyPurchased )( pGame, pPlayer, pLocation );
    }
 }
 
 void MonopolyGamePlayerDeclinesPropertyPurchase( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation )
 {
+   struct MonopolyGameAwaitingResponse* pResponse = pGame->m_pResponseHead;
+   if ( pResponse == NULL || pResponse->m_eResponseWaitingOn != PropertyForPurchase )
+   {
+      //Wait.  Weren't we expecting a property for purchase
+      assert( 0 );
+      return;//TODO: Add error code
+   }
+
    if ( pGame->m_callbackPropertyDeclinedPurchase != NULL )
    {
       ( pGame->m_callbackPropertyDeclinedPurchase )( pGame, pPlayer, pLocation );
