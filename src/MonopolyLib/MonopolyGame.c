@@ -16,6 +16,7 @@ int GetPlayerIndex( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer )
 
 result MonopolyGameCreate( struct MonopolyGame** ppGame,
                            int numPlayers,
+                           struct MonopolyGameCallbacks* pGameCallbacks,
                            struct MonopolyPlayerCallbacks* pPlayerCallbacks,
                            struct MonopolyBoardCallbacks* pBoardCallbacks,
                            struct MonopolyDiceCallbacks* pDiceCallbacks )
@@ -43,6 +44,8 @@ result MonopolyGameCreate( struct MonopolyGame** ppGame,
    }
    pG->m_ppPlayers = ppPlayers;
    pG->m_nNumPlayers = numPlayers;
+   pG->m_callbackPropertyPurchased = pGameCallbacks->m_PropertyPurchasedCallback;
+   pG->m_callbackPropertyDeclinedPurchase = pGameCallbacks->m_PropertyDeclinedPurchaseCallback;
 
    //Set all players on start position
    struct MonopolyLocation* pStartOnGo = MonopolyBoardGetSpot( pG->m_pBoard, 0 );
@@ -155,6 +158,19 @@ void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct Mon
 
    pLocation->m_pOwner = pPlayer;
    pPlayer->m_nMoney -= howMuch;
+
+   if ( pGame->m_callbackPropertyPurchased != NULL )
+   {
+      ( pGame->m_callbackPropertyPurchased )( pGame, pPlayer, pLocation, howMuch );
+   }
+}
+
+void MonopolyGamePlayerDeclinesPropertyPurchase( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation )
+{
+   if ( pGame->m_callbackPropertyDeclinedPurchase != NULL )
+   {
+      ( pGame->m_callbackPropertyDeclinedPurchase )( pGame, pPlayer, pLocation );
+   }
 }
 
 struct MonopolyPlayer* GetPlayer( struct MonopolyGame* pGame, int nIndex )

@@ -17,6 +17,9 @@ typedef void( *LocationBuildingChangedFunc )( struct MonopolyLocation* pLocation
 typedef void( *BoardUnknownFunc )( struct MonopolyBoard* pBoard, int nTODONotYes );
 
 //Game callbacks
+typedef void( *GamePropertyPurchasedFunc )( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerPurchasingProperty, struct MonopolyLocation* pLocationPurchased, int nAmount );
+typedef void( *GamePropertyDeclinedPurchasedFunc )( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerPurchasingProperty, struct MonopolyLocation* pLocationPurchased );
+
 
 //Dice callbacks
 typedef void( *DiceRolledFunc )( struct MonopolyDice* pDice, int nNumDice, int arrDiceValues[] );
@@ -37,6 +40,12 @@ struct MonopolyBoardCallbacks
    BoardUnknownFunc m_SomethingChangedCallback;
 
    struct MonopolyLocationCallbacks* m_pLocationCallbacks;
+};
+
+struct MonopolyGameCallbacks
+{
+   GamePropertyPurchasedFunc m_PropertyPurchasedCallback;
+   GamePropertyDeclinedPurchasedFunc m_PropertyDeclinedPurchaseCallback;
 };
 
 struct MonopolyDiceCallbacks

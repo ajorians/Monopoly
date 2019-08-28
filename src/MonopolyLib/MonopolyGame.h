@@ -18,10 +18,14 @@ struct MonopolyGame
 
    struct MonopolyPlayer* m_pPlayersTurn;
    struct MonopolyDice* m_pDice;
+
+   GamePropertyPurchasedFunc m_callbackPropertyPurchased;
+   GamePropertyDeclinedPurchasedFunc m_callbackPropertyDeclinedPurchase;
 };
 
 result MonopolyGameCreate( struct MonopolyGame** ppGame,
                            int numPlayers,
+                           struct MonopolyGameCallbacks* pGameCallbacks,
                            struct MonopolyPlayerCallbacks* pPlayerCallbacks,
                            struct MonopolyBoardCallbacks* pBoardCallbacks,
                            struct MonopolyDiceCallbacks* pDiceCallbacks );
@@ -35,7 +39,9 @@ struct MonopolyPlayer* MonopolyGameWhosTurn( struct MonopolyGame* pGame );
 void MonopolyGamePlayerRollsForTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerRolling );
 void MonopolyGameEndCurrentTurn( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayerEndingTurn );
 
-//Used for Purchasing and auctions.  Trades don't use this
+//Used for Purchasing.  Trades don't use this
 void MonopolyGamePlayerPurchacesProperty( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation, int howMuch );
+
+void MonopolyGamePlayerDeclinesPropertyPurchase( struct MonopolyGame* pGame, struct MonopolyPlayer* pPlayer, struct MonopolyLocation* pLocation );
 
 #endif // MONOPOLYGAME_H

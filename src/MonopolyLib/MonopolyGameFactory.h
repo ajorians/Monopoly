@@ -10,6 +10,9 @@ struct MonopolyGameFactory
 {
    int m_nNumberOfPlayers;
 
+   //Game callbacks
+   struct MonopolyGameCallbacks m_GameCallbacks;
+
    //Player callbacks
    struct MonopolyPlayerCallbacks m_PlayerCallbacks;
 
