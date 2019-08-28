@@ -56,3 +56,20 @@ const char* MonopolyLocationGetName( struct MonopolyLocation* pLocation )
 {
    return pLocation->m_strName;
 }
+
+enum LocationType MonopolyLocationGetLocationType( struct MonopolyLocation* pLocation )
+{
+   return pLocation->m_eLocationType;
+}
+
+int MonopolyLocationIsPurchasableLocation( struct MonopolyLocation* pLocation )
+{
+   if ( pLocation->m_eLocationType == Property ||
+        pLocation->m_eLocationType == Railroad ||
+        pLocation->m_eLocationType == Utility )
+   {
+      return 1;
+   }
+
+   return 0;
+}

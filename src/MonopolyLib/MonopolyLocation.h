@@ -57,5 +57,9 @@ result MonopolyLocationCreate( struct MonopolyLocation** ppLocation,
 result MonopolyLocationFree( struct MonopolyLocation** ppLocation );
 
 const char* MonopolyLocationGetName( struct MonopolyLocation* pLocation );
+enum LocationType MonopolyLocationGetLocationType( struct MonopolyLocation* pLocation );
+
+//Returns 1 even if already has an owner
+int MonopolyLocationIsPurchasableLocation( struct MonopolyLocation* pLocation );
 
 #endif // MONOPOLYLOCATION_H
