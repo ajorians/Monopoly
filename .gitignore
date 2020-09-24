@@ -47,6 +47,11 @@
 *.VC.db-wal
 *.enc
 applicationhost.config
+*.testlog
+*.manifest
+*.lib.recipe
+*.vcxproj.FileListAbsolute.txt
+*.exe.recipe
 
 
 #Nspire files
